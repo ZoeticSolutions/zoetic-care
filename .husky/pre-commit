@@ -1,0 +1,4 @@
+# Marketing site is PUBLIC — the priority is never committing a secret. lint-staged runs
+# prettier (format html/css/json/md) + secretlint (secret scan) on staged files.
+npx lint-staged
+if command -v gitleaks >/dev/null 2>&1; then gitleaks protect --staged --no-banner; fi

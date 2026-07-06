@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zoetic Care — the EHR built around midwives</title>
+    <meta
+      name="description"
+      content="Zoetic Care is a midwife-centered electronic health record and practice platform for web, iOS, and Android — charting, e-signed consent, scheduling and billing over one secure, FHIR-native backend."
+    />
+    <meta property="og:title" content="Zoetic Care" />
+    <meta
+      property="og:description"
+      content="The EHR built around midwives — charting, consent, scheduling and billing on web, iOS and Android."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zoetic.care" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231E5A6B'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%23E9D3CF' font-family='Georgia'%3EZ%3C/text%3E%3C/svg%3E"
+    />
+    <style>
+      /* Ocean / coastal palette — sampled from the beach reference:
+         deep turquoise, medium blue, blush, peach, caramel over warm sand. */
+      :root {
+        --deep: #1e5a6b;
+        --deep-ink: #123c47;
+        --blue: #3e85a0;
+        --blush: #e9d3cf;
+        --peach: #d89e7f;
+        --caramel: #bc7c46;
+        --sand: #fcfaf6;
+        --sand-alt: #eef4f5;
+        --ink: #22333a;
+        --ink-muted: #5c6f75;
+        --white: #ffffff;
+        --radius: 16px;
+        --shadow: 0 12px 40px rgba(18, 60, 71, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        background: var(--sand);
+        line-height: 1.6;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+        line-height: 1.15;
+      }
+      a {
+        color: var(--blue);
+      }
+      .wrap {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ---- header ---- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(252, 250, 246, 0.86);
+        backdrop-filter: saturate(160%) blur(8px);
+        border-bottom: 1px solid #e3ded4;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 24px;
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: var(--deep-ink);
+        text-decoration: none;
+        font-size: 18px;
+      }
+      .brand .mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(150deg, var(--deep), var(--blue));
+        color: var(--blush);
+        display: grid;
+        place-items: center;
+        font-family: Georgia, serif;
+      }
+      .nav a.link {
+        color: var(--deep-ink);
+        text-decoration: none;
+        margin-left: 22px;
+        font-weight: 500;
+        font-size: 15px;
+      }
+      .nav a.link:hover {
+        color: var(--blue);
+      }
+
+      /* ---- hero ---- */
+      .hero {
+        background:
+          radial-gradient(
+            900px 420px at 82% -12%,
+            rgba(30, 90, 107, 0.3),
+            transparent 62%
+          ),
+          radial-gradient(
+            700px 380px at 8% 8%,
+            rgba(216, 158, 127, 0.3),
+            transparent 60%
+          ),
+          linear-gradient(158deg, #d3e9ee 0%, #f0ddd6 52%, #f7e9dd 100%);
+        padding: 84px 0 64px;
+        border-bottom: 1px solid #e6d9cf;
+      }
+      .hero h1 {
+        font-size: clamp(34px, 6vw, 58px);
+        margin: 0 0 18px;
+        color: var(--deep-ink);
+        letter-spacing: -0.5px;
+      }
+      .hero p.lead {
+        font-size: clamp(17px, 2.4vw, 21px);
+        color: var(--ink-muted);
+        max-width: 640px;
+        margin: 0 0 28px;
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--blue);
+        margin: 0 0 14px;
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 13px 22px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease;
+      }
+      .btn-primary {
+        background: var(--deep);
+        color: var(--white);
+        box-shadow: var(--shadow);
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        background: var(--deep-ink);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--deep-ink);
+        border: 1.5px solid #cdd9db;
+      }
+      .btn-ghost:hover {
+        border-color: var(--blue);
+        color: var(--blue);
+      }
+      .platforms {
+        margin-top: 22px;
+        color: var(--ink-muted);
+        font-size: 14px;
+      }
+
+      /* ---- sections ---- */
+      section {
+        padding: 66px 0;
+      }
+      section.alt {
+        background: linear-gradient(180deg, #f6e7df 0%, #e6f0f2 100%);
+        border-top: 1px solid #eaddd3;
+        border-bottom: 1px solid #d9e6e8;
+      }
+      .section-head {
+        max-width: 680px;
+        margin: 0 auto 40px;
+        text-align: center;
+      }
+      .section-head h2 {
+        font-size: clamp(26px, 4vw, 38px);
+        margin: 0 0 12px;
+        color: var(--deep-ink);
+      }
+      .section-head p {
+        color: var(--ink-muted);
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      /* Each card leans into a different palette color so the grid feels like the whole palette. */
+      .card {
+        background: var(--white);
+        border: 1px solid #e7e0d6;
+        border-radius: var(--radius);
+        padding: 26px;
+        box-shadow: 0 8px 24px rgba(18, 60, 71, 0.06);
+        border-top: 3px solid var(--blue);
+      }
+      .card:nth-child(6n + 1) {
+        border-top-color: var(--deep);
+        background: #f3fafb;
+      }
+      .card:nth-child(6n + 2) {
+        border-top-color: var(--caramel);
+        background: #fbf5ee;
+      }
+      .card:nth-child(6n + 3) {
+        border-top-color: var(--peach);
+        background: #fdf3ec;
+      }
+      .card:nth-child(6n + 4) {
+        border-top-color: var(--blue);
+        background: #f1f8fb;
+      }
+      .card:nth-child(6n + 5) {
+        border-top-color: #c98b86;
+        background: #fbf1ef;
+      }
+      .card:nth-child(6n + 6) {
+        border-top-color: var(--deep);
+        background: #f3fafb;
+      }
+      .card .ico {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        margin-bottom: 14px;
+        background: rgba(30, 90, 107, 0.1);
+      }
+      .card:nth-child(6n + 2) .ico,
+      .card:nth-child(6n + 3) .ico {
+        background: rgba(188, 124, 70, 0.14);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        color: var(--deep-ink);
+      }
+      .card p {
+        margin: 0;
+        color: var(--ink-muted);
+        font-size: 15.5px;
+      }
+
+      /* ---- gallery ---- */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .shot {
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid #dfe7e9;
+        background: linear-gradient(160deg, #dcebef, #f3e7df);
+        aspect-ratio: 16 / 10;
+        display: grid;
+        place-items: center;
+        color: var(--deep-ink);
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        box-shadow: 0 10px 30px rgba(18, 60, 71, 0.1);
+      }
+      .shot span {
+        font-weight: 600;
+        opacity: 0.8;
+      }
+      .shot img,
+      .shot video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        display: block;
+      }
+
+      /* ---- contact ---- */
+      .contact-card {
+        background: linear-gradient(160deg, var(--deep), var(--blue));
+        color: var(--white);
+        border-radius: 22px;
+        padding: 46px;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+      .contact-card h2 {
+        color: var(--white);
+        margin: 0 0 10px;
+        font-size: 30px;
+      }
+      .contact-card p {
+        color: #dbeef2;
+        margin: 0 0 24px;
+        font-size: 17px;
+      }
+      .btn-sand {
+        background: var(--blush);
+        color: var(--deep-ink);
+      }
+      .btn-sand:hover {
+        background: var(--peach);
+      }
+
+      footer {
+        padding: 34px 0 48px;
+        color: var(--ink-muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      .disclaimer {
+        max-width: 720px;
+        margin: 10px auto 0;
+        font-size: 12.5px;
+        color: #8a9599;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <a class="brand" href="#top"
+          ><span class="mark">Z</span> Zoetic&nbsp;Care</a
+        >
+        <div>
+          <a class="link" href="#features">Features</a>
+          <a class="link" href="#gallery">See&nbsp;it</a>
+          <a class="link" href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap">
+          <p class="eyebrow">Midwife-centered EHR</p>
+          <h1>The chart that works the way midwives do.</h1>
+          <p class="lead">
+            Zoetic Care is a calm, secure electronic health record and practice
+            platform for Midwifery Professionals — prenatal to postpartum
+            charting, e-signed consent, scheduling and self-pay billing — on the
+            web and in your pocket on iOS and Android.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Request a walkthrough</a>
+            <a class="btn btn-ghost" href="#features">How it works</a>
+          </div>
+          <p class="platforms">
+            📱 iOS &amp; Android &nbsp;·&nbsp; 💻 Web &nbsp;·&nbsp; 🔒
+            Offline-first &nbsp;·&nbsp; FHIR-native
+          </p>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Built for the whole course of care</h2>
+            <p>
+              One record, one login, from the first prenatal visit through
+              postpartum.
+            </p>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="ico">🤰</div>
+              <h3>Stage-aware charting</h3>
+              <p>
+                Prenatal, labor, and postpartum flows with gestational-age
+                dating, an OB flow sheet, and append-only signed notes.
+              </p>
+            </div>
+            <div class="card">
+              <div class="ico">✍️</div>
+              <h3>Consent &amp; disclosure</h3>
+              <p>
+                Informed disclosure, refusal, and consent with typed
+                e-signatures that gate charting — immutable and hash-verified.
+              </p>
+            </div>
+            <div class="card">
+              <div class="ico">🩺</div>
+              <h3>Risk at a glance</h3>
+              <p>
+                GTPAL history and risk flags — prior C-section/VBAC, high-risk
+                conditions — surfaced right on the client profile.
+              </p>
+            </div>
+            <div class="card">
+              <div class="ico">📶</div>
+              <h3>Works offline</h3>
+              <p>
+                Chart in a birth center or at a home birth with no signal;
+                entries sync automatically the moment you reconnect.
+              </p>
+            </div>
+            <div class="card">
+              <div class="ico">📅</div>
+              <h3>Scheduling &amp; billing</h3>
+              <p>
+                Appointments, reminders, and self-pay superbills — the business
+                side of the practice, built in.
+              </p>
+            </div>
+            <div class="card">
+              <div class="ico">🔐</div>
+              <h3>Secure by design</h3>
+              <p>
+                Mandatory MFA, per-practice data isolation, and a tamper-evident
+                audit trail on every action.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="alt">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>A look inside</h2>
+            <p>
+              The client list, a full pregnancy profile with the OB flow sheet,
+              and your workspace — your way.
+            </p>
+          </div>
+          <div class="gallery">
+            <figure class="shot">
+              <img
+                src="media/patient.webp"
+                alt="Client profile: gestational age, GTPAL history, risk flags (prior C-section/VBAC), and the OB flow sheet"
+                loading="lazy"
+                width="1280"
+                height="880"
+              />
+            </figure>
+            <figure class="shot">
+              <img
+                src="media/dashboard.webp"
+                alt="Client list with obstetric summaries and at-a-glance risk indicators"
+                loading="lazy"
+                width="1280"
+                height="880"
+              />
+            </figure>
+            <figure class="shot">
+              <img
+                src="media/account.webp"
+                alt="Account and appearance — pick a color theme for your workspace"
+                loading="lazy"
+                width="1280"
+                height="880"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="wrap">
+          <div class="contact-card">
+            <h2>Want to see it with your practice?</h2>
+            <p>
+              We’re onboarding a small group of Midwifery Professionals. Reach
+              out and we’ll set up a walkthrough.
+            </p>
+            <a
+              class="btn btn-sand"
+              href="mailto:hello@zoetic.care?subject=Zoetic%20Care%20walkthrough"
+              >hello@zoetic.care</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>© Zoetic Solutions · Zoetic Care</p>
+        <p class="disclaimer">
+          Zoetic Care is practice-management and charting software; it is not a
+          substitute for clinical judgment. All imagery and data shown in demos
+          are synthetic. No real patient information is used in marketing
+          materials.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "webcredentials": {
+    "apps": ["V46GH2Q974.com.zoetic.care"]
+  },
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["V46GH2Q974.com.zoetic.care"],
+        "components": [
+          { "/": "/invite/*", "comment": "Patient Portal claim/invite links open in the app" },
+          { "/": "/portal/*", "comment": "Patient Portal deep links" },
+          { "/": "/app/*", "comment": "Generic app deep links (magic links, etc.)" }
+        ]
+      }
+    ]
+  },
+  "appclips": {
+    "apps": []
+  }
+}

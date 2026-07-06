@@ -1,0 +1,21 @@
+{
+  "name": "zoetic-care-marketing",
+  "private": true,
+  "description": "Public marketing site for Zoetic Care — static, deployed to GitHub Pages at zoetic.care. NO app code, NO secrets.",
+  "scripts": {
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "scan": "secretlint \"site/**/*\""
+  },
+  "lint-staged": {
+    "*.{html,css,js,json,md,yml,yaml}": "prettier --write",
+    "*": "secretlint --maskSecrets"
+  },
+  "devDependencies": {
+    "@secretlint/secretlint-rule-preset-recommend": "^13.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
+    "prettier": "^3.4.2",
+    "secretlint": "^13.0.2"
+  }
+}
